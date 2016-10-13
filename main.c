@@ -101,9 +101,7 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
-#if defined(CHECK)
-    FILE *fin = freopen("random", "r", stdin);
-#endif
+    FILE *fin = freopen("dictionary/words.txt", "r", stdin);
 
     thread_count = atoi(argv[1]);
     data_count = atoi(argv[2]);
@@ -114,16 +112,14 @@ int main(int argc, char const *argv[])
     /* FIXME: remove all all occurrences of printf and scanf
      * in favor of automated test flow.
      */
-    printf("input unsorted data line-by-line\n");
     for (int i = 0; i < data_count; ++i) {
-        long int data;
-        scanf("%ld", &data);
+        val_t data;
+        scanf("%s", data);
         list_add(the_list, data);
     }
 
-#if defined(CHECK)
     fclose(fin);
-#endif
+
 
     /* initialize tasks inside thread pool */
     pthread_mutex_init(&(data_context.mutex), NULL);

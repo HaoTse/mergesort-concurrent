@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef intptr_t val_t;
+typedef char val_t[16];
 
 typedef struct node {
     val_t data;

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "list.h"
 
@@ -7,7 +8,7 @@ static node_t *node_new(val_t val, node_t *next)
 {
     /* allocate node */
     node_t *node = malloc(sizeof(node_t));
-    node->data = val;
+    strcpy(node->data,val);
     node->next = next;
     return node;
 }
@@ -50,24 +51,16 @@ node_t *list_nth(llist_t *list, uint32_t idx)
 
 void list_print(llist_t *list)
 {
-
-#if defined(CHECK)
     FILE *fout = freopen("output", "w+", stdout);
-#endif
 
     node_t *cur = list->head;
     /* FIXME: we have to validate the sorted results in advance. */
-#ifndef CHECK
-    printf("\nsorted results:\n");
-#endif
 
     while (cur) {
-        printf("%ld\n", cur->data);
+        fprintf(fout, "%s\n", cur->data);
         cur = cur->next;
     }
 
-#if defined(CHECK)
     fclose(fout);
-#endif
 
 }

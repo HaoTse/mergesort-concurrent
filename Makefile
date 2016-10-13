@@ -10,7 +10,7 @@ ifeq ($(strip $(CHECK)),1)
 CFLAGS += -DCHECK
 endif
 
-all: $(GIT_HOOKS) sort random_gen
+all: $(GIT_HOOKS) sort
 
 $(GIT_HOOKS):
 	@scripts/install-git-hooks
@@ -23,20 +23,12 @@ deps := $(OBJS:%.o=.%.o.d)
 sort: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) -rdynamic
 
-random_gen: random_gen.o
-	$(CC) $(CFLAGS) -o random_gen random_gen.c
-
-check: random_gen
-	for i in `seq 1 5 500`; do\
-		./random_gen $$i;\
-		./sort 4 $$i;\
-		sort -n random > sorted;\
-		diff output sorted;\
-	done
-	@echo "OK"
+check: all
+	sort -R dictionary/words.txt | ./sort 4 $(shell wc -l dictionary/words.txt)
+	diff dictionary/words.txt output && echo "OK" || echo "Failed!"
 
 clean:
-	rm -f $(OBJS) sort random_gen random output sorted
+	rm -f $(OBJS) sort output
 	@rm -rf $(deps)
 
 -include $(deps)
