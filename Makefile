@@ -27,8 +27,17 @@ check: all
 	sort -R dictionary/words.txt | ./sort 4 $(shell wc -l dictionary/words.txt)
 	diff dictionary/words.txt output && echo "OK" || echo "Failed!"
 
+bench: all
+	rm -f runtime
+	for i in 2 4 8 16 32 64 128 256;do\
+		sort -R dictionary/words.txt | ./sort $$i $(shell wc -l dictionary/words.txt);\
+	done
+
+plot: 
+	gnuplot scripts/runtime.gp
+
 clean:
-	rm -f $(OBJS) sort output
+	rm -f $(OBJS) sort output runtime *.png
 	@rm -rf $(deps)
 
 -include $(deps)

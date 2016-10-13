@@ -7,7 +7,6 @@
 *.swp
 *.bak
 sort
-random_gen
-random
 output
-sorted
+runtime
+*.png
