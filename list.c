@@ -50,12 +50,24 @@ node_t *list_nth(llist_t *list, uint32_t idx)
 
 void list_print(llist_t *list)
 {
+
+#if defined(CHECK)
+    FILE *fout = freopen("output", "w+", stdout);
+#endif
+
     node_t *cur = list->head;
     /* FIXME: we have to validate the sorted results in advance. */
+#ifndef CHECK
     printf("\nsorted results:\n");
+#endif
+
     while (cur) {
-        printf("[%ld] ", cur->data);
+        printf("%ld\n", cur->data);
         cur = cur->next;
     }
-    printf("\n");
+
+#if defined(CHECK)
+    fclose(fout);
+#endif
+
 }
