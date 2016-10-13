@@ -101,8 +101,6 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
-    FILE *fin = freopen("dictionary/words.txt", "r", stdin);
-
     thread_count = atoi(argv[1]);
     data_count = atoi(argv[2]);
 
@@ -118,9 +116,6 @@ int main(int argc, char const *argv[])
         list_add(the_list, data);
     }
 
-    fclose(fin);
-
-
     /* initialize tasks inside thread pool */
     pthread_mutex_init(&(data_context.mutex), NULL);
     tmp_list = NULL;
@@ -135,5 +130,6 @@ int main(int argc, char const *argv[])
 
     /* release thread pool */
     tpool_free(pool);
+
     return 0;
 }
